@@ -1,0 +1,633 @@
+/*
+    Copyright (C) 2026 Jakub Březa
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://gnu.org>.
+*/
+
+/* ==========================================================================
+   QuizApp v3 - Pracovní styly pro studenty (Studentská verze)
+   Cíl: Definovat CSS proměnné (:root), řízení viditelnosti obrazovek a rozvržení výsledků
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Globální CSS proměnné (Studentský úkol TODO 1)
+   -------------------------------------------------------------------------- */
+:root {
+    /* TODO 1: Definuj centrální CSS proměnné pro design systém aplikace */
+    /* NÁPOVĚDA:
+       - Nastav barvu pozadí --color-bg: #0f172a;
+       - Nastav barvu povrchu karet --color-surface: #1e293b;
+       - Nastav barvu ohraničení --color-border: #334155;
+       - Nastav barvy textu: --color-text-primary: #f8fafc; a --color-text-secondary: #94a3b8;
+       - Nastav akcentní barvu textu: --color-text-accent: #38bdf8;
+       - Nastav hlavní barvu tlačítek: --color-primary: #2563eb; a hover: --color-primary-hover: #1d4ed8;
+       - Nastav stavové barvy: --color-correct: #22c55e; a --color-wrong: #ef4444;
+       - Nastav písmo: --font-body: 'Lexend', system-ui, sans-serif;
+       - Nastav zaoblení: --border-radius-md: 0.75rem; a --border-radius-lg: 1rem;
+       - Nastav rychlost přechodů: --transition-speed: 0.2s;
+    */
+
+    /* ZDE NAPIŠ SVŮJ KÓD PRO TODO 1: */
+    --color-bg: #0f172a;
+    --color-surface: #1e293b;
+    --color-surface-hover: #334155;
+    --color-surface-accent: #1e3a8a;
+    --color-border: #334155;
+
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #94a3b8;
+    --color-text-accent: #38bdf8;
+
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-focus-ring: #60a5fa;
+    --color-badge-bg: #1e3a8a;
+
+    --color-correct: #22c55e;
+    --color-correct-glow: rgba(34, 197, 94, 0.4);
+    --color-wrong: #ef4444;
+    --color-wrong-glow: rgba(239, 68, 68, 0.4);
+    --color-timer-warning: #eab308;
+
+    --font-heading: 'Lexend', system-ui, sans-serif;
+    --font-body: 'Lexend', system-ui, sans-serif;
+    --border-radius-sm: 0.5rem;
+    --border-radius-md: 0.75rem;
+    --border-radius-lg: 1rem;
+    --transition-speed: 0.2s;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Základní nastavení (Ponecháno plně funkční)
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   3. Záhlaví aplikace (Ponecháno funkční)
+   -------------------------------------------------------------------------- */
+.app-header {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 1rem 1.5rem;
+}
+
+.header-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.badge-phase {
+    background-color: var(--color-badge-bg);
+    color: var(--color-text-accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-text-accent);
+}
+
+/* --------------------------------------------------------------------------
+   4. Rozvržení a Řízení viditelnosti obrazovek (Studentský úkol TODO 2)
+   -------------------------------------------------------------------------- */
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.screen {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* TODO 2: Nastav třídy pro skrytí a zobrazení obrazovek */
+/* NÁPOVĚDA:
+   - Pro .screen.hidden nastav absolutní skrytí pomocí display: none !important;
+   - Pro .screen.active nastav display: flex;
+*/
+
+.screen.hidden {
+    /* ZDE NAPIŠ SVŮJ KÓD PRO TODO 2 (Skrytí): */
+    display: none !important;
+}
+
+.screen.active {
+    /* ZDE NAPIŠ SVŮJ KÓD PRO TODO 2 (Zobrazení): */
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   5. Karty obrazovek (Ponecháno funkční)
+   -------------------------------------------------------------------------- */
+.card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.screen-card {
+    text-align: center;
+    align-items: center;
+    padding: 2.5rem 2rem;
+}
+
+.screen-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.hero-icon {
+    font-size: 3.5rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.screen-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.screen-subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    max-width: 480px;
+}
+
+.rules-box {
+    background-color: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 1.25rem 1.5rem;
+    width: 100%;
+    text-align: left;
+}
+
+.rules-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-accent);
+    margin-bottom: 0.5rem;
+}
+
+.rules-list {
+    list-style-position: inside;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.rules-list strong {
+    color: var(--color-text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   6. Výsledková rekapitulace (Studentský úkol TODO 3)
+   -------------------------------------------------------------------------- */
+
+/* TODO 3: Nastav mřížku pro 2 výsledkové boxy vedle sebe */
+/* NÁPOVĚDA:
+   - Nastav display: grid; a grid-template-columns: 1fr 1fr;
+   - Přidej mezeru gap: 1rem; a šířku width: 100%;
+*/
+.results-summary-grid {
+    /* ZDE NAPIŠ SVŮJ KÓD PRO TODO 3: */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+.result-box {
+    background-color: rgba(15, 23, 42, 0.7);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.result-label {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.result-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-accent);
+}
+
+/* --------------------------------------------------------------------------
+   7. Tlačítkový systém (Ponecháno funkční)
+   -------------------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.875rem 1.75rem;
+    border-radius: var(--border-radius-md);
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background-color var(--transition-speed) ease,
+        transform var(--transition-speed) ease,
+        box-shadow var(--transition-speed) ease;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+.btn-large {
+    min-width: 220px;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+}
+
+.btn:focus-visible {
+    outline: 3px solid var(--color-focus-ring);
+    outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   8. Herní obrazovka: Panel statistik a časovač (Ponecháno funkční)
+   -------------------------------------------------------------------------- */
+.stats-bar {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.95rem;
+}
+
+.stat-label {
+    color: var(--color-text-secondary);
+}
+
+.stat-value {
+    color: var(--color-text-accent);
+    font-weight: 700;
+}
+
+.timer-display {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background-color: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--color-border);
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.timer-display.warning {
+    color: var(--color-timer-warning);
+    border-color: var(--color-timer-warning);
+}
+
+.timer-display.danger {
+    color: var(--color-wrong);
+    border-color: var(--color-wrong);
+    animation: timer-blink 0.5s infinite alternate;
+}
+
+.timer-bar-container {
+    width: 100%;
+    height: 6px;
+    background-color: rgba(51, 65, 85, 0.5);
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.timer-progress-bar {
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-text-accent);
+    border-radius: 9999px;
+    transition: width 1s linear, background-color 0.3s ease;
+}
+
+.timer-progress-bar.warning {
+    background-color: var(--color-timer-warning);
+}
+
+.timer-progress-bar.danger {
+    background-color: var(--color-wrong);
+}
+
+/* --------------------------------------------------------------------------
+   9. Karta s otázkou a mřížka odpovědí (Ponecháno funkční)
+   -------------------------------------------------------------------------- */
+.card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.question-badge {
+    align-self: flex-start;
+    color: var(--color-text-accent);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.question-text {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-text-primary);
+}
+
+.answers-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+@media (min-width: 560px) {
+    .answers-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+}
+
+.answer-btn {
+    min-height: 56px;
+    padding: 0.875rem 1.25rem;
+    background-color: #1e293b;
+    color: var(--color-text-primary);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    transition: background-color var(--transition-speed) ease,
+        border-color var(--transition-speed) ease,
+        color var(--transition-speed) ease,
+        box-shadow var(--transition-speed) ease,
+        transform var(--transition-speed) ease;
+}
+
+.option-label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    background-color: var(--color-border);
+    color: var(--color-text-accent);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: var(--border-radius-sm);
+    flex-shrink: 0;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.option-text {
+    flex: 1;
+    word-break: break-word;
+}
+
+.answer-btn:hover:not(.disabled) {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-text-accent);
+    transform: translateY(-2px);
+}
+
+.answer-btn:hover:not(.disabled) .option-label {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+
+.answer-btn:active:not(.disabled) {
+    transform: translateY(1px);
+}
+
+.answer-btn:focus-visible {
+    outline: 3px solid var(--color-focus-ring);
+    outline-offset: 3px;
+}
+
+.answer-btn.correct {
+    background-color: rgba(34, 197, 94, 0.2);
+    border-color: var(--color-correct);
+    color: #ffffff;
+    box-shadow: 0 0 15px var(--color-correct-glow);
+    animation: correct-pulse 0.45s ease-out;
+}
+
+.answer-btn.correct .option-label {
+    background-color: var(--color-correct);
+    color: #ffffff;
+}
+
+.answer-btn.wrong {
+    background-color: rgba(239, 68, 68, 0.2);
+    border-color: var(--color-wrong);
+    color: #ffffff;
+    box-shadow: 0 0 15px var(--color-wrong-glow);
+    animation: shake 0.4s ease-in-out;
+}
+
+.answer-btn.wrong .option-label {
+    background-color: var(--color-wrong);
+    color: #ffffff;
+}
+
+.answer-btn.disabled,
+.answers-grid.disabled .answer-btn {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.75;
+}
+
+/* --------------------------------------------------------------------------
+   10. Animace (@keyframes - Ponecháno funkční)
+   -------------------------------------------------------------------------- */
+@keyframes correct-pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-7px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(7px);
+    }
+}
+
+@keyframes timer-blink {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.4;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   11. Informační panel pro vývojáře & Patička (Ponecháno funkční)
+   -------------------------------------------------------------------------- */
+.dev-hint-panel {
+    background-color: rgba(30, 41, 59, 0.7);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+}
+
+.dev-hint-panel strong {
+    color: var(--color-text-primary);
+}
+
+.dev-hint-panel code {
+    background-color: var(--color-bg);
+    color: var(--color-text-accent);
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.app-footer {
+    border-top: 1px solid var(--color-border);
+    padding: 1.25rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}

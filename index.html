@@ -1,0 +1,217 @@
+<!--
+    Copyright (C) 2026 Jakub Březa
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://gnu.org>.
+-->
+<!--
+=============================================================================
+PROJEKT / APLIKACE: QuizApp v3 – Víceobrazovková Architektura a Redesign
+FÁZE / LEKCE: Fáze 3 – Správa stavů obrazovek (User Flow) a CSS Proměnné
+=============================================================================
+
+O APLIKACI:
+Třetí fáze interaktivní kvízové webové aplikace transformuje jednonástěnkovou strukturu
+na robustní víceobrazovkovou architekturu s kompletním uživatelským průchodem (User Flow).
+Aplikace obsahuje 3 samostatné obrazovky (Úvodní, Kvízovou a Závěrečnou s výsledky).
+Vizuální systém je postaven na centralizovaných CSS proměnných (:root), což umožňuje
+okamžitý redesign a snadné napojení na design tokeny z grafických nástrojů (Figma).
+
+VÝUKOVÉ CÍLE A FUNKCIONALITA FÁZE:
+- Architektura více obrazovek: rozdělení HTML do samostatných sémantických sekcí (.screen)
+- Řízení stavu a přepínání viditelnosti obrazovek v JavaScriptu (showScreen, classList .active / .hidden)
+- Životní cyklus hry: inicializace (initGame), start (startGame) a vyhodnocení (endGame)
+- Závěrečná výsledková obrazovka s finálním skóre, procentuální úspěšností a slovním hodnocením
+- Restart hry s kompletním obnovením stavu (tlačítko #restart-btn)
+- Centralizace stylů a barevné palety pomocí CSS proměnných (:root CSS Custom Properties)
+
+KLÍČOVÁ TÉMATA:
+- HTML/CSS: Sekce obrazovek (#start-screen, #quiz-screen, #end-screen), CSS proměnné (:root), řízení viditelnosti (.hidden, .active), flexbox centrování
+- JavaScript: Stavový automat a přepínání obrazovek (showScreen), správa životního cyklu hry (initGame, startGame, endGame), DOM manipulace
+
+NÁVOD PRO STUDENTY:
+- Pro samostatné procvičování přepněte v hlavičce <head> odkaz na styles-students.css a na konci těla na script-students.js.
+- V souborech *-students.* doplňte kód podle očíslovaných úkolů TODO a nápověd.
+=============================================================================
+-->
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizApp v3 – Víceobrazovková Architektura a Redesign</title>
+
+    <!-- Google Fonts: Lexend (vysoká čitelnost a přístupnost) a Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylopis aplikace (pro studentskou verzi přepněte na href="styles-students.css") -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- <link rel="stylesheet" href="styles-students.css"> -->
+</head>
+
+<body>
+
+    <!-- Záhlaví aplikace -->
+    <header class="app-header">
+        <div class="header-container">
+            <h1 class="app-title">🧠 QuizApp</h1>
+            <span class="badge-phase">Fáze 3: Více obrazovek</span>
+        </div>
+    </header>
+
+    <!-- Hlavní obsah stránky: Kontejner pro přepínání obrazovek -->
+    <main class="main-content">
+        <div class="app-container">
+
+            <!-- ============================================================
+                 1. OBRAZOVKA: Úvodní obrazovka (Start Screen)
+                 ============================================================ -->
+            <section id="start-screen" class="screen active" aria-label="Úvodní obrazovka kvízu">
+                <article class="card screen-card">
+                    <div class="screen-hero">
+                        <div class="hero-icon" aria-hidden="true">🎯</div>
+                        <h2 class="screen-title">Vítej v QuizApp!</h2>
+                        <p class="screen-subtitle">Otestuj své znalosti z moderního webového vývoje a JavaScriptu.</p>
+                    </div>
+
+                    <div class="rules-box">
+                        <h3 class="rules-title">📋 Pravidla kvízu:</h3>
+                        <ul class="rules-list">
+                            <li>Kvíz obsahuje sérii <strong>5 otázek</strong>.</li>
+                            <li>Na každou otázku máš limit <strong>10 sekund</strong>.</li>
+                            <li>Za správnou odpověď získáváš bod, špatná odpověď body neubírá.</li>
+                        </ul>
+                    </div>
+
+                    <button id="start-btn" type="button" class="btn btn-primary btn-large">
+                        <span>Spustit kvíz</span>
+                        <span aria-hidden="true">🚀</span>
+                    </button>
+                </article>
+            </section>
+
+            <!-- ============================================================
+                 2. OBRAZOVKA: Herní kvízová obrazovka (Quiz Screen)
+                 ============================================================ -->
+            <section id="quiz-screen" class="screen hidden" aria-label="Kvízová obrazovka">
+
+                <!-- Panel statistik a časovače -->
+                <div id="stats-bar" class="stats-bar" role="region" aria-label="Statistiky a časovač">
+                    <div class="stat-item">
+                        <span class="stat-label">Otázka:</span>
+                        <strong id="round-indicator" class="stat-value">1 / 5</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Skóre:</span>
+                        <strong id="score" class="stat-value">0</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Úspěšnost:</span>
+                        <strong id="accuracy" class="stat-value">0%</strong>
+                    </div>
+                    <div id="timer-display" class="timer-display" aria-live="polite">
+                        <span class="timer-icon" aria-hidden="true">⏱️</span>
+                        <span class="timer-text">Čas: <strong id="timer-seconds">10</strong>s</span>
+                    </div>
+                </div>
+
+                <!-- Vizuální lišta zbývajícího času -->
+                <div class="timer-bar-container" aria-hidden="true">
+                    <div id="timer-progress-bar" class="timer-progress-bar"></div>
+                </div>
+
+                <!-- Karta s otázkou -->
+                <article id="question-card" class="card">
+                    <header class="card-header">
+                        <span id="question-badge" class="question-badge">Otázka 1</span>
+                        <h2 id="question-text" class="question-text">Načítám otázku...</h2>
+                    </header>
+
+                    <!-- Mřížka s tlačítky možností -->
+                    <div id="answers-grid" class="answers-grid" role="group" aria-label="Možnosti odpovědí">
+                        <button type="button" class="answer-btn" data-index="0" aria-label="Možnost A">
+                            <span class="option-label">A</span>
+                            <span class="option-text">Odpověď 1</span>
+                        </button>
+                        <button type="button" class="answer-btn" data-index="1" aria-label="Možnost B">
+                            <span class="option-label">B</span>
+                            <span class="option-text">Odpověď 2</span>
+                        </button>
+                        <button type="button" class="answer-btn" data-index="2" aria-label="Možnost C">
+                            <span class="option-label">C</span>
+                            <span class="option-text">Odpověď 3</span>
+                        </button>
+                        <button type="button" class="answer-btn" data-index="3" aria-label="Možnost D">
+                            <span class="option-label">D</span>
+                            <span class="option-text">Odpověď 4</span>
+                        </button>
+                    </div>
+                </article>
+            </section>
+
+            <!-- ============================================================
+                 3. OBRAZOVKA: Výsledková obrazovka (End Screen)
+                 ============================================================ -->
+            <section id="end-screen" class="screen hidden" aria-label="Výsledková obrazovka">
+                <article class="card screen-card">
+                    <div class="screen-hero">
+                        <div id="final-icon" class="hero-icon" aria-hidden="true">🏆</div>
+                        <h2 class="screen-title">Kvíz dokončen!</h2>
+                        <p id="final-message" class="screen-subtitle">Zde jsou tvé celkové výsledky.</p>
+                    </div>
+
+                    <!-- Výsledková rekapitulace -->
+                    <div class="results-summary-grid">
+                        <div class="result-box">
+                            <span class="result-label">Správné odpovědi</span>
+                            <strong id="final-score" class="result-value">0 / 5</strong>
+                        </div>
+                        <div class="result-box">
+                            <span class="result-label">Finální úspěšnost</span>
+                            <strong id="final-accuracy" class="result-value">0%</strong>
+                        </div>
+                    </div>
+
+                    <button id="restart-btn" type="button" class="btn btn-primary btn-large">
+                        <span>Hrát znovu</span>
+                        <span aria-hidden="true">🔄</span>
+                    </button>
+                </article>
+            </section>
+
+            <!-- Nápověda / stavový panel pro vývojáře a studenty -->
+            <aside class="dev-hint-panel" aria-live="polite">
+                <p>💡 <strong>Tip pro vývojáře:</strong> Uživatelský průchod (User Flow) řídí funkce
+                    <code>showScreen(screenId)</code>. Přepínáním tříd <code>.active</code> a <code>.hidden</code>
+                    udržujeme kód modulární a oddělený od vizuální prezentace.</p>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- Patička stránky -->
+    <footer class="app-footer">
+        <p>QuizApp v3 &bull; Výukový playground od Vlka samotáře &bull; Licence GNU AGPL-3.0</p>
+    </footer>
+
+    <!-- Logika aplikace (pro studentskou verzi přepněte na src="script-students.js") -->
+    <script src="script.js"></script>
+    <!-- <script src="script-students.js"></script> -->
+</body>
+
+</html>
