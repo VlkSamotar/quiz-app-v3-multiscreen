@@ -63,8 +63,6 @@ function calculateAccuracy(correct, total) {
     // return Math.round((correct / total) * 100);
 
     // ZDE NAPIŠ SVŮJ KÓD PRO TODO 1:
-    if (total === 0) return 0;
-    return Math.round((correct / total) * 100);
 }
 
 // ------------------------------------------------------------------------------
@@ -204,17 +202,6 @@ function showScreen(screenId) {
     // }
 
     // ZDE NAPIŠ SVŮJ KÓD PRO TODO 2:
-    const screens = document.querySelectorAll('.screen');
-    screens.forEach((screen) => {
-        screen.classList.add('hidden');
-        screen.classList.remove('active');
-    });
-
-    const targetScreen = document.getElementById(screenId);
-    if (targetScreen) {
-        targetScreen.classList.remove('hidden');
-        targetScreen.classList.add('active');
-    }
 }
 
 // ------------------------------------------------------------------------------
@@ -254,16 +241,6 @@ function startGame() {
     // loadNextQuestion();
 
     // ZDE NAPIŠ SVŮJ KÓD PRO TODO 3:
-    state.currentRound = 0;
-    state.correctAnswers = 0;
-    state.answeredCount = 0;
-    state.isProcessingAnswer = false;
-    state.questionsQueue = shuffle(QUESTIONS_POOL).slice(0, QUESTIONS_PER_GAME);
-    state.totalQuestions = state.questionsQueue.length;
-
-    showScreen('quiz-screen');
-    updateStatsUI();
-    loadNextQuestion();
 }
 
 /**
@@ -277,31 +254,24 @@ function endGame() {
     // 2. Vlož výsledky do textContent prvků '#final-score' a '#final-accuracy'.
     // 3. Podle úspěšnosti nastav text '#final-message' (např. >= 80% super, >= 50% dobré, méně zkus znovu).
     // 4. Přepni na výsledkovou obrazovku pomocí showScreen('end-screen');
+    //
+    // NÁPOVĚDA:
+    // const accuracy = calculateAccuracy(state.correctAnswers, state.totalQuestions);
+    // const finalScoreEl = document.querySelector('#final-score');
+    // if (finalScoreEl) finalScoreEl.textContent = `${state.correctAnswers} / ${state.totalQuestions}`;
+    // const finalAccuracyEl = document.querySelector('#final-accuracy');
+    // if (finalAccuracyEl) finalAccuracyEl.textContent = `${accuracy}%`;
+    //
+    // PŘÍKLAD (podmíněná zpráva podle úspěšnosti):
+    // if (accuracy >= 80) {
+    //     finalMessageEl.textContent = 'Vynikající práce!';
+    // } else if (accuracy >= 50) {
+    //     finalMessageEl.textContent = 'Dobrá práce!';
+    // } else {
+    //     finalMessageEl.textContent = 'Zkus to znovu.';
+    // }
 
     // ZDE NAPIŠ SVŮJ KÓD PRO TODO 4:
-    const accuracy = calculateAccuracy(state.correctAnswers, state.totalQuestions);
-    const finalScoreEl = document.querySelector('#final-score');
-    const finalAccuracyEl = document.querySelector('#final-accuracy');
-    const finalMessageEl = document.querySelector('#final-message');
-    const finalIconEl = document.querySelector('#final-icon');
-
-    if (finalScoreEl) finalScoreEl.textContent = `${state.correctAnswers} / ${state.totalQuestions}`;
-    if (finalAccuracyEl) finalAccuracyEl.textContent = `${accuracy}%`;
-
-    if (finalMessageEl && finalIconEl) {
-        if (accuracy >= 80) {
-            finalIconEl.textContent = '🏆';
-            finalMessageEl.textContent = 'Vynikající práce! Jsi opravdový mistr moderního webu.';
-        } else if (accuracy >= 50) {
-            finalIconEl.textContent = '👍';
-            finalMessageEl.textContent = 'Dobrá práce! Máš solidní základy, zkus to dotáhnout na 100 %.';
-        } else {
-            finalIconEl.textContent = '💡';
-            finalMessageEl.textContent = 'Nevadí, cvičení dělá mistra! Zkus kvíz znovu a překonej své skóre.';
-        }
-    }
-
-    showScreen('end-screen');
 }
 
 // ------------------------------------------------------------------------------
@@ -390,10 +360,6 @@ function loadNextQuestion() {
     // }
 
     // ZDE NAPIŠ SVŮJ KÓD PRO TODO 5:
-    if (state.currentRound >= state.totalQuestions) {
-        endGame();
-        return;
-    }
 
     state.isProcessingAnswer = false;
     state.currentRound++;
