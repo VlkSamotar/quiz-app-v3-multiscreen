@@ -28,44 +28,23 @@
     /* NÁPOVĚDA:
        - Nastav barvu pozadí --color-bg: #0f172a;
        - Nastav barvu povrchu karet --color-surface: #1e293b;
+       - Nastav barvu povrchu při najetí --color-surface-hover: #334155;
+       - Nastav akcentní podklad --color-surface-accent: #1e3a8a;
        - Nastav barvu ohraničení --color-border: #334155;
        - Nastav barvy textu: --color-text-primary: #f8fafc; a --color-text-secondary: #94a3b8;
        - Nastav akcentní barvu textu: --color-text-accent: #38bdf8;
        - Nastav hlavní barvu tlačítek: --color-primary: #2563eb; a hover: --color-primary-hover: #1d4ed8;
+       - Nastav obrys pro klávesnici: --color-focus-ring: #60a5fa;
+       - Nastav pozadí odznáčku: --color-badge-bg: #1e3a8a;
        - Nastav stavové barvy: --color-correct: #22c55e; a --color-wrong: #ef4444;
-       - Nastav písmo: --font-body: 'Lexend', system-ui, sans-serif;
-       - Nastav zaoblení: --border-radius-md: 0.75rem; a --border-radius-lg: 1rem;
+       - Nastav záře stavů: --color-correct-glow: rgba(34, 197, 94, 0.4); a --color-wrong-glow: rgba(239, 68, 68, 0.4);
+       - Nastav barvu výstrahy časovače: --color-timer-warning: #eab308;
+       - Nastav písma: --font-heading a --font-body: 'Lexend', system-ui, sans-serif;
+       - Nastav zaoblení: --border-radius-sm: 0.5rem; --border-radius-md: 0.75rem; --border-radius-lg: 1rem;
        - Nastav rychlost přechodů: --transition-speed: 0.2s;
-    */
+     */
 
     /* ZDE NAPIŠ SVŮJ KÓD PRO TODO 1: */
-    --color-bg: #0f172a;
-    --color-surface: #1e293b;
-    --color-surface-hover: #334155;
-    --color-surface-accent: #1e3a8a;
-    --color-border: #334155;
-
-    --color-text-primary: #f8fafc;
-    --color-text-secondary: #94a3b8;
-    --color-text-accent: #38bdf8;
-
-    --color-primary: #2563eb;
-    --color-primary-hover: #1d4ed8;
-    --color-focus-ring: #60a5fa;
-    --color-badge-bg: #1e3a8a;
-
-    --color-correct: #22c55e;
-    --color-correct-glow: rgba(34, 197, 94, 0.4);
-    --color-wrong: #ef4444;
-    --color-wrong-glow: rgba(239, 68, 68, 0.4);
-    --color-timer-warning: #eab308;
-
-    --font-heading: 'Lexend', system-ui, sans-serif;
-    --font-body: 'Lexend', system-ui, sans-serif;
-    --border-radius-sm: 0.5rem;
-    --border-radius-md: 0.75rem;
-    --border-radius-lg: 1rem;
-    --transition-speed: 0.2s;
 }
 
 /* --------------------------------------------------------------------------
@@ -158,12 +137,10 @@ body {
 
 .screen.hidden {
     /* ZDE NAPIŠ SVŮJ KÓD PRO TODO 2 (Skrytí): */
-    display: none !important;
 }
 
 .screen.active {
     /* ZDE NAPIŠ SVŮJ KÓD PRO TODO 2 (Zobrazení): */
-    display: flex;
 }
 
 @keyframes fadeIn {
@@ -263,11 +240,6 @@ body {
 */
 .results-summary-grid {
     /* ZDE NAPIŠ SVŮJ KÓD PRO TODO 3: */
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    width: 100%;
-    margin: 0.5rem 0;
 }
 
 .result-box {
