@@ -98,7 +98,7 @@ quiz-app-v3-multiscreen/
 ├── README.md             # Tento didaktický průvodce s architekturou a návodem
 └── docs/                 # Výukové podklady a taháky
     ├── quiz-app-v3-multiscreen.md
-    └── JS_user_flow_CSS_promenne_tahak.md
+    └── JS-user-flow-CSS-promenne-tahak.md
 ```
 
 ---
